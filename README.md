@@ -22,6 +22,9 @@ This project also reflects my personal interest in education, productivity, and 
 - Apply statistical and machine learning techniques to identify predictors of academic success.
 - Visualize and interpret the most influential factors affecting exam outcomes.
 
+## Research Question
+To what extent can students’ academic performance be predicted by their lifestyle habits and behavioral factors such as sleep duration, study hours, motivation, and stress levels — beyond traditional demographic variables like gender or parental education?
+
 ## Dataset Description
 
 ### Primary Dataset
