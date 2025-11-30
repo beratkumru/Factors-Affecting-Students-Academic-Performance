@@ -148,10 +148,10 @@ To enrich the original dataset, I collected personal behavioral data and merged 
 * **Merging Key:** The datasets were merged on `StudentID`.
 * **Final Sample Size:** The resulting dataset consists of **20 students** (due to the matching process between the enrichment data and the base dataset).
 * **New Variables Added:**
-    * `SleepDuration`: Average hours of sleep per night.
-    * `DailyStudyHours`: Self-reported daily study time.
-    * `StressLevel`: Scale of 1-5.
-    * `MotivationLevel`: Scale of 1-5.
+  `SleepDuration`: Average hours of sleep per night.
+  `DailyStudyHours`: Self-reported daily study time.
+  `StressLevel`: Scale of 1-5.
+  `MotivationLevel`: Scale of 1-5.
 
 ### 3. Exploratory Data Analysis (EDA)
 After cleaning the data, I looked at the correlation matrix to see which factors strongly influence the GPA.
