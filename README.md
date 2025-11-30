@@ -135,3 +135,52 @@ Evaluation Metrics: R² Score, Accuracy, Confusion Matrix, Feature Importance
 - Add additional behavioral variables (diet, physical activity, caffeine intake).
 - Explore deep learning models for more advanced prediction.
 - Compare findings across multiple universities or educational systems.
+
+# Phase 2 Report: Data Collection, EDA, and Hypothesis Testing
+
+### 1. Project Overview & Objective
+In this second phase of the term project, the main goal was to move from proposal to practice. I focused on collecting real behavioral data, merging it with the provided Kaggle dataset, and performing Exploratory Data Analysis (EDA) to understand the relationships between lifestyle habits (like sleep and stress) and academic performance (GPA).
+
+### 2. Data Collection and Integration
+To enrich the original dataset, I collected personal behavioral data and merged it with the Kaggle `Student_performance_data.csv`.
+
+* **Tools Used:** Python (Pandas, Seaborn, Scipy).
+* **Merging Key:** The datasets were merged on `StudentID`.
+* **Final Sample Size:** The resulting dataset consists of **20 students** (due to the matching process between the enrichment data and the base dataset).
+* **New Variables Added:**
+    * `SleepDuration`: Average hours of sleep per night.
+    * `DailyStudyHours`: Self-reported daily study time.
+    * `StressLevel`: Scale of 1-5.
+    * `MotivationLevel`: Scale of 1-5.
+
+### 3. Exploratory Data Analysis (EDA)
+After cleaning the data, I looked at the correlation matrix to see which factors strongly influence the GPA.
+
+**Key Findings:**
+* **The "Absences" Factor:** The most significant finding was a very strong negative correlation (**-0.93**) between *Absences* and *GPA*. This clearly indicates that attendance is the strongest predictor of success in this dataset.
+* **Lifestyle Factors:** Surprisingly, simple correlations for *Sleep Duration* (-0.05) and *Stress Level* (0.13) were quite weak. This suggests that for this specific group of students, these factors don't have a simple linear relationship with grades, or the effect is overshadowed by the impact of attendance.
+
+
+### 4. Hypothesis Testing
+I tested two main hypotheses derived from my proposal using statistical methods (Pearson Correlation and T-Test).
+
+**Hypothesis 1:** *Students with longer sleep duration achieve higher GPAs.*
+* **Test Used:** Pearson Correlation.
+* **Result:** Correlation (r) = -0.06, P-value = 0.80.
+* **Conclusion:** The p-value is greater than 0.05, so we **failed to reject the null hypothesis**. In this small sample size (N=20), there is no statistically significant link between sleep duration and GPA.
+
+**Hypothesis 2:** *High stress levels lead to lower academic performance.*
+* **Test Used:** Independent T-Test (comparing Low Stress vs. High Stress groups).
+* **Result:** P-value = 0.94.
+* **Conclusion:** There was no significant difference in the average GPA of students with high stress versus low stress.
+
+### 5. Preliminary Predictive Analysis (Machine Learning)
+Although this phase focused on EDA, I ran a preliminary **Linear Regression** model to see if the variables could predict GPA when used together.
+
+* **Model Performance:** The model achieved an **R² Score of 0.86**, which is quite high.
+* **Insight:** Interestingly, unlike the simple correlation test, the regression model assigned a **positive coefficient** to *Sleep Duration* (+0.35). This suggests that when we control for attendance (Absences), sleep actually *does* have a positive impact on success.
+
+
+### 6. Limitations and Future Work
+The main limitation encountered in this phase was the **small sample size (N=20)**. This explains why some hypothesis tests yielded non-significant p-values.
+
