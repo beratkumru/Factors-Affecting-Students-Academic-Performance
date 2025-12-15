@@ -138,49 +138,56 @@ Evaluation Metrics: R² Score, Accuracy, Confusion Matrix, Feature Importance
 
 # Phase 2 Report: Data Collection, EDA, and Hypothesis Testing
 
-### 1. Project Overview & Objective
-In this second phase of the term project, the main goal was to move from proposal to practice. I focused on collecting real behavioral data, merging it with the provided Kaggle dataset, and performing Exploratory Data Analysis (EDA) to understand the relationships between lifestyle habits (like sleep and stress) and academic performance (GPA).
+## 1. Project Overview & Objective
 
-### 2. Data Collection and Integration
-To enrich the original dataset, I collected personal behavioral data and merged it with the Kaggle Student_performance_data.csv.
+In this second phase of the term project, the main goal was to move from proposal to practice. I focused on analyzing the Student Performance dataset from Kaggle and enriching it with my own self-collected data. The objective was to determine whether success is driven by habits, such as attendance and study time, or background factors, such as ethnicity and personal stress.
 
-* **Tools Used:** Python (Pandas, Seaborn, Scipy).
+## 2. Data Collection and Integration
+
+To enrich the original analysis, I merged the large Kaggle dataset with personal behavioral data I collected.
+
+* **Tools Used:** Python (Pandas, Seaborn, Scipy, Scikit-Learn).
 * **Merging Key:** The datasets were merged on Student ID.
-* **Final Sample Size:** The resulting dataset consists of **20 students** (due to the matching process between the enrichment data and the base dataset).
-* **New Variables Added:**
-    * Sleep Duration: Average hours of sleep per night.
-    * Daily Study Hours: Self-reported daily study time.
-    * Stress Level: Scale of 1-5.
-    * Motivation Level: Scale of 1-5.
+* **Final Sample Size:** The main analysis includes 2,392 students from the Kaggle dataset. The enrichment analysis includes 20 students where I have additional sleep and stress data.
+* **New Variables Added:** Sleep Duration, Stress Level, Motivation Level.
 
-### 3. Exploratory Data Analysis (EDA)
-After cleaning the data, I visualized the relationships between variables to understand the "big picture."
+## 3. Exploratory Data Analysis (EDA)
 
-**Key Findings:**
-* **The "Absences" Factor:** The most significant finding was a very strong negative correlation (**-0.93**) between Absences and GPA. This clearly indicates that attendance is the strongest predictor of success in this dataset.
-* **Lifestyle Factors:** Surprisingly, simple correlations for Sleep Duration (-0.05) and Stress Level (0.13) were quite weak. This suggests that for this specific group of students, these factors don't have a simple linear relationship with grades, or the effect is overshadowed by the impact of attendance.
+I created 4 key visualizations to understand the big picture.
 
-### 4. Hypothesis Testing
-I tested two main hypotheses derived from my proposal using statistical methods (Pearson Correlation and T-Test).
+* **GPA Distribution (Histogram):** The grades follow a normal distribution (Bell Curve), meaning most students perform around the average, which validates the dataset quality.
 
-**Hypothesis 1:** *Students with longer sleep duration achieve higher GPAs.*
+* **Attendance vs. GPA (Scatter Plot):** This was the most significant finding. I color-coded the students from A to F. The graph showed a very strong negative correlation (approx. -0.91). Students with high absences are clustered at the bottom with lower grades.
+
+* **Demographics (Boxplot):** I analyzed if Ethnicity affects GPA. The boxplot showed that the median GPA is nearly identical across all ethnic groups, suggesting the system is fair and background is not a primary factor.
+
+* **Lifestyle Factors (Heatmap):** I plotted a correlation matrix for the enriched data including Sleep, Stress, and Study Hours. The correlations were weaker than expected, likely due to the limited sample size of 20 students.
+
+## 4. Hypothesis Testing
+
+To go beyond visual graphs, I tested two main hypotheses using statistical methods.
+
+### Hypothesis 1: Does Sleep Duration affect GPA?
 * **Test Used:** Pearson Correlation.
-* **Result:** Correlation (r) = -0.06, P-value = 0.80.
-* **Conclusion:** The p-value is greater than 0.05, so we **failed to reject the null hypothesis**. In this small sample size (N=20), there is no statistically significant link between sleep duration and GPA.
+* **Result:** The P-value was greater than 0.05.
+* **Conclusion:** We failed to reject the null hypothesis. In this small sample group (N=20), statistically, sleep did not show a direct linear impact on grades.
 
-**Hypothesis 2:** *High stress levels lead to lower academic performance.*
+### Hypothesis 2: Does High Stress lead to lower academic performance?
 * **Test Used:** Independent T-Test (comparing Low Stress vs. High Stress groups).
-* **Result:** P-value = 0.94.
-* **Conclusion:** There was no significant difference in the average GPA of students with high stress versus low stress.
+* **Result:** The P-value was greater than 0.05.
+* **Conclusion:** There was no statistically significant difference in the average GPA of students with high stress versus low stress in this sample.
 
-### 5. Preliminary Predictive Analysis (Machine Learning)
-Although this phase focused on EDA, I ran a preliminary **Linear Regression** model to see if the variables could predict GPA when used together.
+## 5. Preliminary Predictive Analysis (Machine Learning)
 
-* **Model Performance:** The model achieved an **R² Score of 0.86**, which is quite high.
-* **Insight:** Interestingly, unlike the simple correlation test, the regression model assigned a **positive coefficient** to Sleep Duration (+0.35). This suggests that when we control for attendance (Absences), sleep actually *does* have a positive impact on success.
+I implemented a Linear Regression model to see if we can predict a student's GPA based on their school habits.
 
-### 6. Limitations and Future Work
-The main limitation encountered in this phase was the **small sample size (N=20)**. This explains why some hypothesis tests yielded non-significant p-values (statistical noise).
+* **Inputs:** Absences and StudyTimeWeekly.
+* **Target:** GPA.
+* **Model Performance:** The model achieved a very high R2 Score (Accuracy) on the test set.
+* **Insight:** The model coefficients confirmed that Absences have the largest negative impact, while Study Time has a positive impact. This proves that habits are the strongest predictor of success.
 
-* **Next Steps (Phase 3):** I plan to refine the machine learning approach by using Random Forest to better classify student performance and potentially expand the dataset if possible to stabilize the behavioral trends.
+## 6. Limitations and Future Work
 
+* **Limitations:** The main limitation was the small sample size (N=20) for the self-collected enrichment data regarding sleep and stress. This explains why the hypothesis tests for these specific factors were not statistically significant.
+
+* **Next Steps (Phase 3):** I plan to interpret these findings further and finalize the project documentation. The current results strongly advocate for attendance policies over lifestyle interventions for this specific dataset.
