@@ -181,7 +181,7 @@ To go beyond visual graphs, I tested two main hypotheses using statistical metho
 
 * **Limitations:** The main limitation was the small sample size (N=20) for the self-collected enrichment data regarding sleep and stress. This explains why the hypothesis tests for these specific factors were not statistically significant.
 
-* # Phase 3: Machine Learning Analysis
+# Phase 3: Machine Learning Analysis
 
 In this final phase, I applied Machine Learning models to predict student performance based on their habits. The goal was to move beyond simple correlations and build predictive models.
 
