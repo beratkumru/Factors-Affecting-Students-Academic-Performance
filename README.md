@@ -183,26 +183,24 @@ To go beyond visual graphs, I tested two main hypotheses using statistical metho
 
 # Phase 3: Machine Learning Analysis
 
-In this final phase, I applied Machine Learning models to predict student performance based on their habits. The goal was to move beyond simple correlations and build predictive models.
+In this final phase, I applied Machine Learning models to predict student performance. I specifically selected algorithms and evaluation metrics covered in the course lectures (Week 8 and Week 9).
 
 ### A. Regression Analysis (Predicting GPA)
-* **Goal:** To predict the exact GPA score of a student based on their attendance and study habits.
+* **Goal:** To predict the exact GPA score based on attendance and study habits.
 * **Models Compared:**
-    * *Linear Regression:* Assuming a straight-line relationship.
-    * *Random Forest Regressor:* A more complex model that uses multiple decision trees.
-* **Result:** The Random Forest model performed slightly better with a higher **R² Score** compared to Linear Regression. This confirms that while the relationship is mostly linear (more absences = lower grades), there are complex patterns that Random Forest captures better.
-* **Key Finding:** **Absences** and **Study Time** proved to be the strongest predictors of a student's GPA.
+    * *Linear Regression:* Used as a baseline model assuming a linear relationship.
+    * *Decision Tree Regressor:* Used to capture non-linear patterns in the data (as covered in the **Decision Tree Learning** lecture - Week 9).
+* **Result:** The Decision Tree model provided accurate predictions, confirming that **Absences** and **Study Time** are the strongest predictors of GPA.
 
 ### B. Classification Analysis (Pass vs. Fail)
 * **Goal:** To classify students into two groups: **Pass (GPA ≥ 2.0)** and **Fail (GPA < 2.0)**.
-* **Model Used:** Random Forest Classifier.
-* **Evaluation Metrics:**
-    * **Accuracy:** The model achieved high accuracy (>95%), meaning it correctly identified passing and failing students most of the time.
-    * **Confusion Matrix:** The matrix showed very few "False Positives" (predicting a student would pass when they actually failed) and "False Negatives".
-    * **Precision & Recall:** The high scores in these metrics indicate that the model is highly reliable for identifying at-risk students.
+* **Model Used:** Decision Tree Classifier.
+* **Evaluation Metrics (Based on Week 8):**
+    * **Accuracy:** The model achieved high accuracy (>90%).
+    * **Confusion Matrix:** I used the Confusion Matrix to visualize True Positives and False Negatives. The results showed that the model makes very few mistakes.
+    * **Precision & Recall:** High scores in these metrics indicate that the model is reliable in identifying students at risk of failing.
 
 ### C. Final Conclusion
-This project successfully demonstrated that:
-1.  **Attendance is King:** The number of absences is the single most critical factor determining academic success in this dataset.
-2.  **Habits over Demographics:** Behavioral factors (like study time and attendance) are much better predictors of success than demographic factors like ethnicity.
-3.  **Predictive Power:** Using simple machine learning models, we can predict student performance with high accuracy, which could be useful for early warning systems in schools.
+1.  **Attendance is Critical:** The analysis proves that the number of absences is the most significant factor affecting grades.
+2.  **Model Performance:** Using **Decision Trees** allowed for interpretable results that match the patterns seen in the Exploratory Data Analysis (EDA) phase.
+3.  **Predictive Success:** We can successfully predict if a student will pass or fail using just a few behavioral inputs.
