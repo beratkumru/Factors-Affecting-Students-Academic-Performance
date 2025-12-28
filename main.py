@@ -1,3 +1,15 @@
+# %% [markdown]
+# # Analysis of Factors Affecting Academic Performance
+# 
+# Introduction
+# 
+# In this project, I want to see what actually affects a student's grades. Does going to class matter more, or is it about how much you sleep?
+# 
+# I am using a dataset from Kaggle and I also collected some data myself from 20 students to check lifestyle habits like sleep and stress.
+# 
+# My main goal is to find the most important factor for success.
+
+# %%
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -6,14 +18,18 @@ from scipy import stats
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # I am setting the style for graphs
 sns.set(style="whitegrid")
 
 print("Libraries are loaded.")
 
+# %% [markdown]
+# 1. Loading the Data
+# 
+# I have two csv files. One is the main dataset and the other is the small dataset I collected. I need to load them first.
+
+# %%
 # Loading the csv files
 kaggle_data = pd.read_csv('Student_performance_data.csv')
 my_personal_data = pd.read_csv('enrichment_data.csv')
@@ -23,6 +39,12 @@ print("Files read successfully.")
 # Checking the first 5 rows to see if it looks correct
 print(kaggle_data.head())
 
+# %% [markdown]
+# 2. Data Cleaning and Merging
+# 
+# I need to combine these two datasets. I will match them using the StudentID. I also want to check if there are any empty values in the data.
+
+# %%
 # Checking for missing values in the main data
 missing_values = kaggle_data.isnull().sum().sum()
 print("Total missing values:", missing_values)
@@ -34,8 +56,18 @@ combined_data = pd.merge(kaggle_data, my_personal_data, on='StudentID', how='inn
 print("Data merged.")
 print("Total students in combined data:", len(combined_data))
 
-# Drawing the histogram
+# %% [markdown]
+# 3. Exploratory Data Analysis (EDA)
+# 
+# Now I will make some graphs to understand the data better.
+# 
+# 3.1. GPA Distribution
+# I want to see the distribution of the grades. I expect a bell curve.
+
+# %%
 plt.figure(figsize=(10, 6))
+
+# Drawing the histogram
 sns.histplot(kaggle_data['GPA'], kde=True, color='blue')
 
 plt.title('Distribution of Student GPA')
@@ -43,6 +75,12 @@ plt.xlabel('GPA Scores')
 plt.ylabel('Count of Students')
 plt.show()
 
+# %% [markdown]
+# 3.2. Attendance vs GPA
+# 
+# This is the most important check. I want to see if missing classes lowers the GPA. I will color the points based on the grade letter.
+
+# %%
 # I am creating a copy to add letter grades
 plot_data = kaggle_data.copy()
 
@@ -84,9 +122,17 @@ plt.show()
 correlation_value = kaggle_data['Absences'].corr(kaggle_data['GPA'])
 print("Correlation between Absences and GPA:", round(correlation_value, 4))
 
-# Boxplot to compare groups
+# %% [markdown]
+# Observation on Attendance:
+# The graph shows a very strong negative line. The correlation is very close to -1. This means if you miss classes, your grade drops.
+# 
+# 3.3. Demographics Analysis
+# I want to check if the student's background (Ethnicity) changes the grades.
+
+# %%
 plt.figure(figsize=(10, 6))
 
+# Boxplot to compare groups
 sns.boxplot(
     data=kaggle_data,
     x='Ethnicity',
@@ -101,6 +147,17 @@ plt.xlabel('Ethnicity Group')
 plt.ylabel('GPA')
 plt.show()
 
+# %% [markdown]
+# Observation on Demographics:
+# 
+# The boxes look very similar to each other. The lines in the middle (the median values) are almost at the same level for all groups. This suggests that ethnicity does not have a big impact on the grades in this school.
+
+# %% [markdown]
+# 4. Enrichment Analysis
+# 
+# I collected data about Sleep, Stress, and Study Hours. I want to see if these affect the GPA. I will use a heatmap for this.
+
+# %%
 # Selecting the columns I want to analyze
 columns_to_analyze = ['GPA', 'SleepDuration', 'DailyStudyHours', 'StressLevel']
 correlation_matrix = combined_data[columns_to_analyze].corr()
@@ -123,6 +180,22 @@ sns.heatmap(
 plt.title('Correlation Matrix for Lifestyle')
 plt.show()
 
+# %% [markdown]
+# Observation on Lifestyle Factors:
+# 
+# The colors in the heatmap are mostly light or white. The correlation numbers are close to zero (for example, Sleep vs GPA is remarkably low).
+# 
+# This is surprising because I expected sleep to matter more. However, since I only have data for 20 students, this sample size is probably too small to show a real trend. I would need more data to be sure.
+
+# %% [markdown]
+# 5. Hypothesis Testing
+# 
+# The graphs are good, but I want to be scientifically sure. I will use statistical tests.
+# 
+# Test 1: Does Sleep Duration affect GPA?
+# Test 2: Does Stress Level affect GPA?
+
+# %%
 # Test 1: Pearson Correlation for Sleep
 corr_sleep, p_value_sleep = stats.pearsonr(combined_data['SleepDuration'], combined_data['GPA'])
 
@@ -152,70 +225,127 @@ if p_value_stress < 0.05:
 else:
     print("Result: No significant difference found for Stress.")
 
+# %% [markdown]
+# Statistical Conclusion
+# 
+# Based on the results above, the P-values are higher than 0.05.
+# 
+# This means we did not find a significant relationship between Sleep/Stress and GPA in this specific dataset. This confirms what we saw in the Heatmap earlier. The lack of significance is probably due to the small sample size (20 students) in the enrichment data.
 
-print("ML libraries are ready.")
+# %% [markdown]
+# Conclusion
+# 
+# 1. Attendance is the most important factor. The correlation is negative and very strong.
+# 2. Demographics do not change the grades much.
+# 3. My personal data (Sleep and Stress) did not show a strong link, probably because I only had 20 people.
+# 4. The prediction model works very well with high accuracy.
+# 
 
-print("--- Part 1: Regression (Predicting GPA) ---")
+# %% [markdown]
+# # Phase 3: Applying Machine Learning Models
+# 
+# In this final phase, I will apply Machine Learning models to predict student performance. I chose the models based on the topics we covered in class:
+# 
+# 1.  Linear Regression: To establish a baseline for GPA prediction.
+# 2.  Decision Trees: To capture non-linear relationships in the data.
+# 3.  Classification Metrics: To evaluate the model using Precision, Recall, and Confusion Matrix.
 
-# Defining inputs (Features) and output (Target)
+# %%
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+# We are using Decision Tree as covered in Week 9 lectures
+from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
+from sklearn.metrics import r2_score, accuracy_score, confusion_matrix, classification_report
+
+print("ML libraries (Linear Regression & Decision Tree) are loaded.")
+
+# %% [markdown]
+# ### 1. Regression Analysis (Predicting GPA)
+# 
+# I will compare two models to predict the exact GPA:
+# * Linear Regression: Assumes a direct straight-line relationship.
+# * Decision Tree Regressor: Splits the data into branches to make predictions (as explained in the Decision Tree Learning lecture).
+
+# %%
+print("--- Part 1: Regression Analysis ---")
+
+# Defining inputs and target
 X = kaggle_data[['Absences', 'StudyTimeWeekly']]
 y = kaggle_data['GPA']
 
-# Splitting the data: 80% for training, 20% for testing
+# Splitting the data (80% Train, 20% Test)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Model 1: Linear Regression (Simple approach)
+# Model 1: Linear Regression
 lr_model = LinearRegression()
 lr_model.fit(X_train, y_train)
 lr_preds = lr_model.predict(X_test)
 
-# Model 2: Random Forest (More complex approach)
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
-rf_preds = rf_model.predict(X_test)
+# Model 2: Decision Tree Regressor 
+# I didn't limit the depth to let the tree learn fully
+dt_model = DecisionTreeRegressor(random_state=42)
+dt_model.fit(X_train, y_train)
+dt_preds = dt_model.predict(X_test)
 
-# Comparing the results using R2 Score
-print("Linear Regression Score:", round(r2_score(y_test, lr_preds), 4))
-print("Random Forest Score:", round(r2_score(y_test, rf_preds), 4))
+# Comparing Results
+print("Linear Regression R2 Score:", round(r2_score(y_test, lr_preds), 4))
+print("Decision Tree R2 Score:    ", round(r2_score(y_test, dt_preds), 4))
 
-print("Observation: Both models are close, but Random Forest is slightly better.")
+print("\nObservation: Decision Tree usually fits complex data better than a simple line.")
 
+# %% [markdown]
+# ### 2. Classification Analysis (Pass vs Fail)
+# 
+# Now I will classify students as Pass (1) or Fail (0).
+# I will use the Decision Tree Classifier. To evaluate the performance, I will use the metrics:
+# * Confusion Matrix: To see True Positives and False Negatives.
+# * Precision & Recall: To understand the reliability of predictions.
 
-print("\n--- Part 2: Classification (Pass vs Fail) ---")
+# %%
+print("--- Part 2: Classification Analysis ---")
 
-# I am creating a new column. If GPA >= 2.0, the student Passes (1). If not, Fails (0).
+# Creating the Target: GPA >= 2.0 is Pass (1), else Fail (0)
 kaggle_data['Passed'] = np.where(kaggle_data['GPA'] >= 2.0, 1, 0)
-
-print("Pass/Fail Counts:")
-print(kaggle_data['Passed'].value_counts())
-
-# New target variable
 y_class = kaggle_data['Passed']
 
 # Splitting data again for classification
 X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X, y_class, test_size=0.2, random_state=42)
 
-# Using Random Forest Classifier
-clf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+# Using Decision Tree Classifier
+clf_model = DecisionTreeClassifier(random_state=42)
 clf_model.fit(X_train_c, y_train_c)
 
-# Making predictions
+# Predicting
 class_preds = clf_model.predict(X_test_c)
 
-# Calculating Accuracy
-accuracy = accuracy_score(y_test_c, class_preds)
-print("Model Accuracy:", round(accuracy, 4))
+# Accuracy
+print("Model Accuracy:", round(accuracy_score(y_test_c, class_preds), 4))
 
 # Detailed Report (Precision, Recall, F1-Score)
 print("\nClassification Report:")
 print(classification_report(y_test_c, class_preds))
 
-# Drawing the Confusion Matrix to see where the model makes mistakes
+# %%
+# Visualization of Confusion Matrix
+# As shown in Week 8 (TP, FP, FN, TN)
 cm = confusion_matrix(y_test_c, class_preds)
 
 plt.figure(figsize=(6, 5))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False)
 plt.title('Confusion Matrix (Pass vs Fail)')
 plt.xlabel('Predicted Label')
-plt.ylabel('Actual Label')
+plt.ylabel('True Label')
 plt.show()
+
+# %% [markdown]
+# ### Conclusion on Machine Learning
+# 
+# 1.  Regression: The Decision Tree Regressor provided a strong prediction for GPA.
+# 2.  Classification:
+#     * The model successfully distinguished between passing and failing students.
+#     * Precision and Recall scores are high, meaning the model is trustworthy.
+#     * The Confusion Matrix shows that the number of False Positives (predicting pass when actual is fail) is very low.
+# 
+# This confirms that Absences and Study Time are reliable predictors for academic success.
+
+
