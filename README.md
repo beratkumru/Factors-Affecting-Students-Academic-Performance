@@ -177,17 +177,32 @@ To go beyond visual graphs, I tested two main hypotheses using statistical metho
 * **Result:** The P-value was greater than 0.05.
 * **Conclusion:** There was no statistically significant difference in the average GPA of students with high stress versus low stress in this sample.
 
-## 5. Preliminary Predictive Analysis (Machine Learning)
-
-I implemented a Linear Regression model to see if we can predict a student's GPA based on their school habits.
-
-* **Inputs:** Absences and StudyTimeWeekly.
-* **Target:** GPA.
-* **Model Performance:** The model achieved a very high R2 Score (Accuracy) on the test set.
-* **Insight:** The model coefficients confirmed that Absences have the largest negative impact, while Study Time has a positive impact. This proves that habits are the strongest predictor of success.
-
-## 6. Limitations and Future Work
+## 5. Limitations and Future Work
 
 * **Limitations:** The main limitation was the small sample size (N=20) for the self-collected enrichment data regarding sleep and stress. This explains why the hypothesis tests for these specific factors were not statistically significant.
 
-* **Next Steps (Phase 3):** I plan to interpret these findings further and finalize the project documentation. The current results strongly advocate for attendance policies over lifestyle interventions for this specific dataset.
+* ## 6. Phase 3: Machine Learning Analysis
+
+In this final phase, I applied Machine Learning models to predict student performance based on their habits. The goal was to move beyond simple correlations and build predictive models.
+
+### A. Regression Analysis (Predicting GPA)
+* **Goal:** To predict the exact GPA score of a student based on their attendance and study habits.
+* **Models Compared:**
+    * *Linear Regression:* Assuming a straight-line relationship.
+    * *Random Forest Regressor:* A more complex model that uses multiple decision trees.
+* **Result:** The Random Forest model performed slightly better with a higher **R² Score** compared to Linear Regression. This confirms that while the relationship is mostly linear (more absences = lower grades), there are complex patterns that Random Forest captures better.
+* **Key Finding:** **Absences** and **Study Time** proved to be the strongest predictors of a student's GPA.
+
+### B. Classification Analysis (Pass vs. Fail)
+* **Goal:** To classify students into two groups: **Pass (GPA ≥ 2.0)** and **Fail (GPA < 2.0)**.
+* **Model Used:** Random Forest Classifier.
+* **Evaluation Metrics:**
+    * **Accuracy:** The model achieved high accuracy (>95%), meaning it correctly identified passing and failing students most of the time.
+    * **Confusion Matrix:** The matrix showed very few "False Positives" (predicting a student would pass when they actually failed) and "False Negatives".
+    * **Precision & Recall:** The high scores in these metrics indicate that the model is highly reliable for identifying at-risk students.
+
+### C. Final Conclusion
+This project successfully demonstrated that:
+1.  **Attendance is King:** The number of absences is the single most critical factor determining academic success in this dataset.
+2.  **Habits over Demographics:** Behavioral factors (like study time and attendance) are much better predictors of success than demographic factors like ethnicity.
+3.  **Predictive Power:** Using simple machine learning models, we can predict student performance with high accuracy, which could be useful for early warning systems in schools.
