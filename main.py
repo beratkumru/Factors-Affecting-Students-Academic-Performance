@@ -263,8 +263,10 @@ print("ML libraries (Linear Regression & Decision Tree) are loaded.")
 # ### 1. Regression Analysis (Predicting GPA)
 # 
 # I will compare two models to predict the exact GPA:
-# * Linear Regression: Assumes a direct straight-line relationship.
-# * Decision Tree Regressor: Splits the data into branches to make predictions (as explained in the Decision Tree Learning lecture).
+# 
+# -Linear Regression: Assumes a direct straight-line relationship.
+# 
+# -Decision Tree Regressor: Splits the data into branches to make predictions (as explained in the Decision Tree Learning lecture).
 
 # %%
 print("--- Part 1: Regression Analysis ---")
@@ -298,8 +300,10 @@ print("\nObservation: Decision Tree usually fits complex data better than a simp
 # 
 # Now I will classify students as Pass (1) or Fail (0).
 # I will use the Decision Tree Classifier. To evaluate the performance, I will use the metrics:
-# * Confusion Matrix: To see True Positives and False Negatives.
-# * Precision & Recall: To understand the reliability of predictions.
+# 
+# -Confusion Matrix: To see True Positives and False Negatives.
+# 
+# -Precision & Recall: To understand the reliability of predictions.
 
 # %%
 print("--- Part 2: Classification Analysis ---")
@@ -342,10 +346,49 @@ plt.show()
 # 
 # 1.  Regression: The Decision Tree Regressor provided a strong prediction for GPA.
 # 2.  Classification:
-#     * The model successfully distinguished between passing and failing students.
-#     * Precision and Recall scores are high, meaning the model is trustworthy.
-#     * The Confusion Matrix shows that the number of False Positives (predicting pass when actual is fail) is very low.
+# 
+#     -The model successfully distinguished between passing and failing students. 
+# 
+#     -Precision and Recall scores are high, meaning the model is trustworthy. 
+#     
+#     -The Confusion Matrix shows that the number of False Positives (predicting pass when actual is fail) is very low. 
 # 
 # This confirms that Absences and Study Time are reliable predictors for academic success.
+
+# %% [markdown]
+# ### C. Feature Importance Analysis (Why does the model work?)
+# \- Objective: To scientifically determine which behavioral factor has the strongest impact on a student's success.
+# 
+# \- Method: I extracted the feature importance scores from the Decision Tree model. This measures how much each feature contributes to reducing uncertainty in the predictions.
+# 
+# \- Key Finding:
+# 
+#   \- The analysis shows that Absences has a significantly higher importance score compared to Study Time.
+# 
+#   \- This mathematically proves that attendance is the primary driver of academic success in this dataset.
+# 
+# \- Visual: The generated bar chart in the analysis file clearly illustrates the dominance of attendance over study duration.
+# 
+
+# %%
+# Feature Importance
+print("\nFeature Importance Analysis")
+
+# Extracting importance scores from the Decision Tree model
+importances = clf_model.feature_importances_
+feature_names = ['Absences', 'StudyTimeWeekly']
+
+# Visualization
+plt.figure(figsize=(8, 5))
+
+
+sns.barplot(x=feature_names, y=importances, hue=feature_names, legend=False, palette='viridis')
+
+plt.title('Feature Importance (Which factor impacts grades most?)')
+plt.ylabel('Importance Score')
+plt.xlabel('Factors')
+plt.show()
+
+print("Analysis Completed Successfully.")
 
 
